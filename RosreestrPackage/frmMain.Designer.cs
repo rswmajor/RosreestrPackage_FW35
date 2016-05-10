@@ -34,14 +34,14 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ClearListFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DeleteItemListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CheckSignToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewCertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnCreatePackage = new System.Windows.Forms.Button();
             this.chbDeleteFiles = new System.Windows.Forms.CheckBox();
             this.btnNewGuid = new System.Windows.Forms.Button();
             this.chbShowAllCerts = new System.Windows.Forms.CheckBox();
             this.chbNotCreatePackage = new System.Windows.Forms.CheckBox();
             this.chbOverwriteSign = new System.Windows.Forms.CheckBox();
-            this.CheckSignToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ViewCertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,7 +71,7 @@
             this.CheckSignToolStripMenuItem,
             this.ViewCertToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(198, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(198, 114);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // ClearListFilesToolStripMenuItem
@@ -87,6 +87,22 @@
             this.DeleteItemListToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.DeleteItemListToolStripMenuItem.Text = "Удалить";
             this.DeleteItemListToolStripMenuItem.Click += new System.EventHandler(this.DeleteItemListToolStripMenuItem_Click);
+            // 
+            // CheckSignToolStripMenuItem
+            // 
+            this.CheckSignToolStripMenuItem.Image = global::RosreestrPackage.Properties.Resources.iconWarningShield;
+            this.CheckSignToolStripMenuItem.Name = "CheckSignToolStripMenuItem";
+            this.CheckSignToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.CheckSignToolStripMenuItem.Text = "Проверить подпись";
+            this.CheckSignToolStripMenuItem.Click += new System.EventHandler(this.CheckSignToolStripMenuItem_Click);
+            // 
+            // ViewCertToolStripMenuItem
+            // 
+            this.ViewCertToolStripMenuItem.Image = global::RosreestrPackage.Properties.Resources.iconViewFind;
+            this.ViewCertToolStripMenuItem.Name = "ViewCertToolStripMenuItem";
+            this.ViewCertToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.ViewCertToolStripMenuItem.Text = "Просмотр сертифката";
+            this.ViewCertToolStripMenuItem.Click += new System.EventHandler(this.ViewCertToolStripMenuItem_Click);
             // 
             // btnCreatePackage
             // 
@@ -144,6 +160,7 @@
             this.chbNotCreatePackage.TabIndex = 6;
             this.chbNotCreatePackage.Text = "Не создавать архив";
             this.chbNotCreatePackage.UseVisualStyleBackColor = true;
+            this.chbNotCreatePackage.CheckedChanged += new System.EventHandler(this.chbNotCreatePackage_CheckedChanged);
             // 
             // chbOverwriteSign
             // 
@@ -155,20 +172,6 @@
             this.chbOverwriteSign.TabIndex = 7;
             this.chbOverwriteSign.Text = "Переподписывать";
             this.chbOverwriteSign.UseVisualStyleBackColor = true;
-            // 
-            // CheckSignToolStripMenuItem
-            // 
-            this.CheckSignToolStripMenuItem.Image = global::RosreestrPackage.Properties.Resources.iconWarningShield;
-            this.CheckSignToolStripMenuItem.Name = "CheckSignToolStripMenuItem";
-            this.CheckSignToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-            this.CheckSignToolStripMenuItem.Text = "Проверить подпись";
-            // 
-            // ViewCertToolStripMenuItem
-            // 
-            this.ViewCertToolStripMenuItem.Image = global::RosreestrPackage.Properties.Resources.iconViewFind;
-            this.ViewCertToolStripMenuItem.Name = "ViewCertToolStripMenuItem";
-            this.ViewCertToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-            this.ViewCertToolStripMenuItem.Text = "Просмотр сертифката";
             // 
             // frmMain
             // 
