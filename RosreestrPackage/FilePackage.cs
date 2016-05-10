@@ -11,6 +11,7 @@ namespace RosreestrPackage
         public readonly string RelativePath;
         public readonly bool InSubDirectory;
         public readonly string DirectoryPath;
+        public bool IsSigned;
 
 
         /// <summary>
@@ -19,16 +20,16 @@ namespace RosreestrPackage
         /// <param name="filePath">Full path to file</param>
         /// <param name="inSubDirectory">if in sub directory - true</param>
         /// <param name="basePath">if in sub directory - path parent directory to xml file, else string empty</param>
-        public FilePackage(string filePath, bool inSubDirectory, string basePath)
+        public FilePackage(string filePath, string basePath)
         {
             FullName = filePath;
-            InSubDirectory = inSubDirectory;
+            InSubDirectory = basePath.Length > 0;
             BasePath = basePath;
             DirectoryPath = Directory.GetParent(filePath).FullName;
-            RelativePath = inSubDirectory ? GetRelativePath(basePath, DirectoryPath) : string.Empty;
+            RelativePath = InSubDirectory ? GetRelativePath(basePath, DirectoryPath) : string.Empty;
             Name = Path.GetFileName(filePath);
-            RelativeName = inSubDirectory ? GetRelativePath(basePath, filePath) : Name;
-
+            RelativeName = InSubDirectory ? GetRelativePath(basePath, filePath) : Name;
+            IsSigned = false;
             //Debug.WriteLine("FullName: " + FullName);
             //Debug.WriteLine("Name: " + Name);
             //Debug.WriteLine("RelativePath: " + RelativePath);

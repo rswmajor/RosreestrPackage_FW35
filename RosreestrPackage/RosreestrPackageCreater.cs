@@ -112,7 +112,7 @@ namespace RosreestrPackage
                                 {
                                     raiseEvent(new ProgressEventArgs(ProgressEventArgs.ProgressStatus.SIGN_PACKAGE, signaturesFiles.Count, filesToPackage.Count));
                                     var list = new List<FilePackage>();
-                                    list.Add(new FilePackage(packageName, false, ""));
+                                    list.Add(new FilePackage(packageName, ""));
                                     signFiles(list, cert, true);
                                 }
                             }
@@ -150,7 +150,7 @@ namespace RosreestrPackage
 
                 if (File.Exists(signatureFileName))
                 {
-                    existSignatures.Add(new FilePackage(signatureFileName, myfile.InSubDirectory, myfile.BasePath));
+                    existSignatures.Add(new FilePackage(signatureFileName, myfile.BasePath));
                     files.Remove(myfile);
                 }
             }
@@ -183,9 +183,11 @@ namespace RosreestrPackage
 
                     if (signedBytes != null)
                     {
-                        FilePackage fileSig = new FilePackage(myfile.FullName + SIGNATURE_EXT, myfile.InSubDirectory, myfile.BasePath);
+                        FilePackage fileSig = new FilePackage(myfile.FullName + SIGNATURE_EXT, myfile.BasePath);
 
                         File.WriteAllBytes(fileSig.FullName, signedBytes);
+
+                        myfile.IsSigned = true;
 
                         signedFiles.Add(fileSig);
                     }
@@ -253,7 +255,6 @@ namespace RosreestrPackage
 
             return null;
         }
-
 
         private FilePackage searchXmlCadastre(List<FilePackage> files)
         {

@@ -40,6 +40,8 @@
             this.chbShowAllCerts = new System.Windows.Forms.CheckBox();
             this.chbNotCreatePackage = new System.Windows.Forms.CheckBox();
             this.chbOverwriteSign = new System.Windows.Forms.CheckBox();
+            this.CheckSignToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewCertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,22 +67,24 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ClearListFilesToolStripMenuItem,
-            this.DeleteItemListToolStripMenuItem});
+            this.DeleteItemListToolStripMenuItem,
+            this.CheckSignToolStripMenuItem,
+            this.ViewCertToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(169, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(198, 92);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // ClearListFilesToolStripMenuItem
             // 
             this.ClearListFilesToolStripMenuItem.Name = "ClearListFilesToolStripMenuItem";
-            this.ClearListFilesToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.ClearListFilesToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.ClearListFilesToolStripMenuItem.Text = "Очистить список";
             this.ClearListFilesToolStripMenuItem.Click += new System.EventHandler(this.ClearListFilesToolStripMenuItem_Click);
             // 
             // DeleteItemListToolStripMenuItem
             // 
             this.DeleteItemListToolStripMenuItem.Name = "DeleteItemListToolStripMenuItem";
-            this.DeleteItemListToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.DeleteItemListToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.DeleteItemListToolStripMenuItem.Text = "Удалить";
             this.DeleteItemListToolStripMenuItem.Click += new System.EventHandler(this.DeleteItemListToolStripMenuItem_Click);
             // 
@@ -152,6 +156,20 @@
             this.chbOverwriteSign.Text = "Переподписывать";
             this.chbOverwriteSign.UseVisualStyleBackColor = true;
             // 
+            // CheckSignToolStripMenuItem
+            // 
+            this.CheckSignToolStripMenuItem.Image = global::RosreestrPackage.Properties.Resources.iconWarningShield;
+            this.CheckSignToolStripMenuItem.Name = "CheckSignToolStripMenuItem";
+            this.CheckSignToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.CheckSignToolStripMenuItem.Text = "Проверить подпись";
+            // 
+            // ViewCertToolStripMenuItem
+            // 
+            this.ViewCertToolStripMenuItem.Image = global::RosreestrPackage.Properties.Resources.iconViewFind;
+            this.ViewCertToolStripMenuItem.Name = "ViewCertToolStripMenuItem";
+            this.ViewCertToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.ViewCertToolStripMenuItem.Text = "Просмотр сертифката";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -187,6 +205,8 @@
         private System.Windows.Forms.ToolStripMenuItem ClearListFilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DeleteItemListToolStripMenuItem;
         private System.Windows.Forms.CheckBox chbOverwriteSign;
+        private System.Windows.Forms.ToolStripMenuItem CheckSignToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ViewCertToolStripMenuItem;
     }
 }
 

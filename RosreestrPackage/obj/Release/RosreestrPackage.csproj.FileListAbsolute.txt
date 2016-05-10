@@ -1,0 +1,31 @@
+C:\Users\Sergey\Source\Workspaces\mybackupfiles\RosreestrPackage\RosreestrPackage\bin\Release\RosreestrPackage.exe.config
+C:\Users\Sergey\Source\Workspaces\mybackupfiles\RosreestrPackage\RosreestrPackage\bin\Release\RosreestrPackage.exe
+C:\Users\Sergey\Source\Workspaces\mybackupfiles\RosreestrPackage\RosreestrPackage\bin\Release\RosreestrPackage.pdb
+C:\Users\Sergey\Source\Workspaces\mybackupfiles\RosreestrPackage\RosreestrPackage\bin\Release\Ionic.Zip.dll
+C:\Users\Sergey\Source\Workspaces\mybackupfiles\RosreestrPackage\RosreestrPackage\obj\Release\RosreestrPackage.frmGuid.resources
+C:\Users\Sergey\Source\Workspaces\mybackupfiles\RosreestrPackage\RosreestrPackage\obj\Release\RosreestrPackage.frmMain.resources
+C:\Users\Sergey\Source\Workspaces\mybackupfiles\RosreestrPackage\RosreestrPackage\obj\Release\RosreestrPackage.frmProgress.resources
+C:\Users\Sergey\Source\Workspaces\mybackupfiles\RosreestrPackage\RosreestrPackage\obj\Release\RosreestrPackage.Properties.Resources.resources
+C:\Users\Sergey\Source\Workspaces\mybackupfiles\RosreestrPackage\RosreestrPackage\obj\Release\RosreestrPackage.csproj.GenerateResource.Cache
+C:\Users\Sergey\Source\Workspaces\mybackupfiles\RosreestrPackage\RosreestrPackage\obj\Release\RosreestrPackage.exe
+C:\Users\Sergey\Source\Workspaces\mybackupfiles\RosreestrPackage\RosreestrPackage\obj\Release\RosreestrPackage.pdb
+C:\Users\Sergey\Source\Workspaces\mybackupfiles\RosreestrPackage\RosreestrPackage\obj\Release\RosreestrPackage.csprojResolveAssemblyReference.cache
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\bin\Release\RosreestrPackage.exe.config
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\bin\Release\RosreestrPackage.exe.manifest
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\bin\Release\RosreestrPackage.application
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\bin\Release\RosreestrPackage.exe
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\bin\Release\RosreestrPackage.pdb
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\bin\Release\Ionic.Zip.dll
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.frmGuid.resources
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.frmMain.resources
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.frmProgress.resources
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.Properties.Resources.resources
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.csproj.GenerateResource.Cache
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.TrustInfo.xml
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.exe.manifest
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.application
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.exe
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.pdb
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.csprojResolveAssemblyReference.cache
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.frmSelectName.resources
+C:\Users\Sergey\Documents\Visual Studio 2015\Projects\RosreestrPackage_FW35\RosreestrPackage\obj\Release\RosreestrPackage.frmSelectCertificate.resources

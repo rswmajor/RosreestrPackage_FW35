@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Ionic.Zip;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -23,10 +25,19 @@ namespace RosreestrPackage
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            InitUI();
+        }
+
+        private void InitUI()
+        {
             lvListFiles.View = View.Details;
             lvListFiles.Columns.Add("Файл", lvListFiles.Width - 10);
+            lvListFiles.SmallImageList = new ImageList();
+            lvListFiles.SmallImageList.Images.Add(Properties.Resources.iconPen);
 
             this.Text += " " + Application.ProductVersion;
+
+            chbNotCreatePackage_CheckedChanged(null, null);
         }
 
 
@@ -34,11 +45,37 @@ namespace RosreestrPackage
         {
             if (lvListFiles.Items.Count > 0)
             {
-                mPickedCert = null;
+
                 mPickedCert = pickCertificate();
                 if (mPickedCert != null)
                 {
-                    getCertSubjectName(mPickedCert);
+
+                    //Unpack zip if count files 1
+                    if (lvListFiles.Items.Count == 1)
+                    {
+                        var file = (FilePackage)lvListFiles.Items[0].Tag;
+                        if (IsCadastrePackage(file))
+                        {
+                            string filesig = file.FullName + RosreestrPackageCreater.SIGNATURE_EXT;
+                            bool sigExists = File.Exists(filesig);
+                            string comment = sigExists ? "\n\nПодпись архива будет удалена, т.к. перестанет быть корректной." : "";
+
+                            if (MessageBox.Show("Подписать файлы внутри архива?" + comment, "Подтверждение",
+                                MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                            {
+                                //If the signature is there, it will be incorrect
+                                if (sigExists)
+                                {
+                                    File.Delete(filesig);
+                                }
+
+                                lvListFiles.Items[0].Remove();
+                                UnpackPackageAndAddFiles(file);
+                            }
+                        }
+                    }
+
+
                     List<FilePackage> filesToSign = new List<FilePackage>();
 
                     foreach (ListViewItem item in lvListFiles.Items)
@@ -46,6 +83,7 @@ namespace RosreestrPackage
                         filesToSign.Add((FilePackage)item.Tag);
                     }
 
+                    //sign package if shema parcels
                     bool isSignPack;
                     string packageName;
                     var xmlfile = SelectPackageXML(searchXmlCadastre(filesToSign));
@@ -62,10 +100,12 @@ namespace RosreestrPackage
 
                     if (isSignPack)
                     {
-                        isSignPack = MessageBox.Show("Подписать создаваемый пакет выбранной подписью?", "Внимание", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
+                        isSignPack = MessageBox.Show("Подписать создаваемый пакет выбранной подписью?", "Подтверждение",
+                                                    MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) == DialogResult.Yes;
                     }
 
-                    RosreestrPackageCreater rp = new RosreestrPackageCreater(filesToSign, mPickedCert, chbNotCreatePackage.Checked, chbDeleteFiles.Checked);
+                    //
+                    var rp = new RosreestrPackageCreater(filesToSign, mPickedCert, chbNotCreatePackage.Checked, chbDeleteFiles.Checked);
                     rp.PackageName = packageName;
                     rp.IsSignPackage = isSignPack;
                     rp.OverWriteSign = chbOverwriteSign.Checked;
@@ -133,13 +173,18 @@ namespace RosreestrPackage
                     formProgress.setTextProgress("Подпись пакета...");
                     break;
                 case RosreestrPackageCreater.ProgressEventArgs.ProgressStatus.COMPLETE:
+                    string textComplete = string.Format("Подписано файлов: {0}/{1}", args.CountSigned, lvListFiles.Items.Count);
+
                     string certSubjectName = getCertSubjectName(mPickedCert);
                     if (certSubjectName.Length > 0)
-                        certSubjectName += "\n";
+                        textComplete = certSubjectName + "\n" + textComplete;
 
-                    formProgress.setTextProgress(certSubjectName +
-                                                    "Подписано файлов: " + args.CountSigned.ToString() + "/" + lvListFiles.Items.Count.ToString() + "\n" +
-                                                    "Добавлено в пакет: " + args.CountInPackage.ToString());
+                    if (!chbNotCreatePackage.Checked)
+                    {
+                        textComplete += string.Format("\nДобавлено в пакет: {0}", args.CountInPackage);
+                    }
+
+                    formProgress.setTextProgress(textComplete);
 
 
                     string textError = "";
@@ -215,30 +260,37 @@ namespace RosreestrPackage
             {
                 if (File.Exists(filename))
                 {
-                    AddFileToList(filename, false, "");
+                    AddFileToList(filename, "");
                 }
                 else if (Directory.Exists(filename))
                 {
                     var filesdirs = Directory.GetFiles(filename, "*.*", SearchOption.AllDirectories);
                     foreach (string fileIndir in filesdirs)
                     {
-                        AddFileToList(fileIndir, true, Directory.GetParent(filename).FullName);
+                        AddFileToList(fileIndir, Directory.GetParent(filename).FullName);
                     }
                 }
             }
 
         }
 
-        private void AddFileToList(string filepath, bool inSubDirectory, string basePath)
+        private void AddFileToList(string filepath, string basePath)
         {
             if (isNewFile(filepath))
             {
                 if (!filepath.EndsWith(RosreestrPackageCreater.SIGNATURE_EXT))
                 {
-                    FilePackage file = new FilePackage(filepath, inSubDirectory, basePath);
+                    FilePackage file = new FilePackage(filepath, basePath);
+                    file.IsSigned = IsSignExist(filepath);
+
                     ListViewItem item = new ListViewItem();
                     item.Text = file.RelativeName;
                     item.Tag = file;
+
+                    if (file.IsSigned)
+                    {
+                        item.ImageIndex = 0;
+                    }
                     lvListFiles.Items.Add(item);
                 }
             }
@@ -258,11 +310,34 @@ namespace RosreestrPackage
             return true;
         }
 
+        private void UnpackPackageAndAddFiles(FilePackage filePackage)
+        {
+            using (ZipFile zip = ZipFile.Read(filePackage.FullName, new ReadOptions() { Encoding = Encoding.GetEncoding(866) }))
+            {
+
+                zip.AlternateEncoding = Encoding.UTF8;
+                zip.AlternateEncodingUsage = ZipOption.Default;
+
+                zip.ExtractAll(filePackage.DirectoryPath);
+
+                var files = zip.EntryFileNames;
+                foreach (var myfile in files)
+                {
+                    string relativeName = myfile.Replace("/", "\\");
+                    bool inSubDir = relativeName.IndexOf("\\") > -1;
+                    string fullName = Path.Combine(filePackage.DirectoryPath, relativeName);
+                    string basePath = inSubDir ? filePackage.DirectoryPath : string.Empty;
+                    AddFileToList(fullName, basePath);
+
+                }
+            }
+        }
+
         private List<FilePackage> searchXmlCadastre(List<FilePackage> files)
         {
             var xmlfiles = new List<FilePackage>();
 
-            string prefixXmlCadastre = "gkuzu|guoks|gkuoks|act|SchemaParcels";
+            string prefixXmlCadastre = "gkuzu|guoks|gkuoks|act|SchemaParcels|req";
 
             string pattern = "^(" + prefixXmlCadastre + @")_.+\.xml";
 
@@ -278,6 +353,15 @@ namespace RosreestrPackage
             }
 
             return xmlfiles;
+        }
+
+        private bool IsCadastrePackage(FilePackage file)
+        {
+            string prefixXmlCadastre = "gkuzu|guoks|gkuoks|act|SchemaParcels|req";
+
+            string pattern = "^(" + prefixXmlCadastre + @")_.+\.zip";
+
+            return (Regex.IsMatch(file.Name, pattern, RegexOptions.IgnoreCase));
         }
 
         private FilePackage SelectPackageXML(List<FilePackage> filelist)
@@ -322,6 +406,13 @@ namespace RosreestrPackage
         //    return true;
         //}
 
+        private bool IsSignExist(string filename)
+        {
+            string signatureFileName = filename + RosreestrPackageCreater.SIGNATURE_EXT;
+
+            return File.Exists(signatureFileName);
+        }
+
         private X509Certificate2 pickCertificate()
         {
             X509Store myStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
@@ -346,13 +437,9 @@ namespace RosreestrPackage
                     certsForOpen = myStore.Certificates;
                 }
 
-                //X509Certificate2Collection certsSelected = X509Certificate2UI.SelectFromCollection(certsForOpen, "Выбор сертификата",
-                //                                                                                    "Выберите сертификат для подписи",
+                ////X509Certificate2Collection certsSelected = X509Certificate2UI.SelectFromCollection(certsForOpen, "Выбор сертификата",
+                //                                                                                    "Выберите сертификат для подписи", 
                 //                                                                                    X509SelectionFlag.SingleSelection);
-                //if (certsSelected.Count > 0)
-                //{
-                //    return certsSelected[0];
-                //}
 
                 var frmcert = new frmSelectCertificate();
                 frmcert.CertificateList = certsForOpen;
@@ -362,13 +449,21 @@ namespace RosreestrPackage
 
                 return certSelected;
 
+                //if (certsSelected.Count > 0)
+                //{
+                //    return certsSelected[0];
+                //}
+
             }
             catch (Exception)
             {
 
             }
+            finally
+            {
+                myStore.Close();
+            }
 
-            myStore.Close();
 
             return null;
         }
@@ -388,6 +483,56 @@ namespace RosreestrPackage
             frm = null;
         }
 
+        private void CheckSignature(List<FilePackage> files)
+        {
+            var checker = new SignatureChecker(files);
+            checker.OnProgress += Checker_OnProgress;
+            checker.VerifyAsyncThread();
+
+            formProgress = new frmProgress();
+            formProgress.Location = new Point(Location.X + Width / 2, Location.Y + Height / 2);
+            formProgress.ShowDialog();
+        }
+
+        private void Checker_OnProgress(object sender, SignatureChecker.ProgressEventArgs e)
+        {
+            showProgressCheck(e);
+        }
+
+        private delegate void delegateShowProgressCheck(SignatureChecker.ProgressEventArgs args);
+        private void showProgressCheck(SignatureChecker.ProgressEventArgs args)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new delegateShowProgressCheck(showProgressCheck), args);
+                return;
+            }
+
+            if (formProgress == null)
+                return;
+            else
+                if (!formProgress.Visible)
+                formProgress.Visible = true;
+
+            switch (args.Status)
+            {
+                case SignatureChecker.ProgressEventArgs.ProgressStatus.BEGIN:
+                    formProgress.setTextProgress("Проверка...");
+                    break;
+                case SignatureChecker.ProgressEventArgs.ProgressStatus.COMPLETE:
+                    if (args.Success)
+                    {
+                        formProgress.setTextProgress("Успешно. Подпись корректна.");
+                    }
+                    else
+                    {
+                        formProgress.setTextProgress("Неудача. Подпись не корректна.");
+                    }
+                    formProgress.completeProgress(args.Success, "");
+                    break;
+            }
+        }
+
 
         private void ClearListFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -402,11 +547,53 @@ namespace RosreestrPackage
             }
         }
 
+        private void CheckSignToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var files = new List<FilePackage>();
+            foreach (ListViewItem lvitem in lvListFiles.SelectedItems)
+            {
+                files.Add((FilePackage)lvitem.Tag);
+            }
+            CheckSignature(files);
+        }
+
+        private void ViewCertToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var myfile = (FilePackage)lvListFiles.SelectedItems[0].Tag;
+            string filesig = myfile.FullName + RosreestrPackageCreater.SIGNATURE_EXT;
+            var certsForOpen = SignatureChecker.GetCertificates(filesig);
+            if (certsForOpen != null)
+            {
+                X509Certificate2UI.SelectFromCollection(certsForOpen, "Список сертификатов подписи", "", X509SelectionFlag.SingleSelection);
+            }
+
+        }
+
         private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             ClearListFilesToolStripMenuItem.Enabled = lvListFiles.Items.Count > 0;
             DeleteItemListToolStripMenuItem.Enabled = lvListFiles.SelectedItems.Count > 0;
+
+            if (lvListFiles.SelectedItems.Count == 1)
+            {
+                var myfile = (FilePackage)lvListFiles.SelectedItems[0].Tag;
+                CheckSignToolStripMenuItem.Visible = myfile.IsSigned;
+                ViewCertToolStripMenuItem.Visible = myfile.IsSigned;
+            }
+            else
+            {
+                CheckSignToolStripMenuItem.Visible = false;
+                ViewCertToolStripMenuItem.Visible = false;
+            }
+
         }
+
+        private void chbNotCreatePackage_CheckedChanged(object sender, EventArgs e)
+        {
+            btnCreatePackage.Text = chbNotCreatePackage.Checked ? "Подписать" : "Подписать и упаковать";
+        }
+
+
     }
 
 

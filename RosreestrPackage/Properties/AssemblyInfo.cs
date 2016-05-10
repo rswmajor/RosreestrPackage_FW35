@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("RSW")]
 [assembly: AssemblyProduct("RosreestrPackage")]
-[assembly: AssemblyCopyright("Copyright © Rihmayer Sergey 2015")]
+[assembly: AssemblyCopyright("Copyright © Rihmayer Sergey 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,7 +33,7 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.4.0")]
-[assembly: AssemblyFileVersion("1.4.0")]
+[assembly: AssemblyVersion("1.6.0")]
+[assembly: AssemblyFileVersion("1.6.0")]
 [assembly: NeutralResourcesLanguage("ru-RU")]
 

@@ -124,6 +124,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RosreestrPackageCreater.cs" />
+    <Compile Include="SignatureChecker.cs" />
     <EmbeddedResource Include="frmGuid.resx">
       <DependentUpon>frmGuid.cs</DependentUpon>
     </EmbeddedResource>
@@ -167,7 +168,10 @@
   <ItemGroup>
     <Content Include="iconCheck.png" />
     <None Include="iconCross.png" />
+    <None Include="iconPen.png" />
     <Content Include="iconRR.ico" />
+    <None Include="iconViewFind.png" />
+    <None Include="iconWarningShield.png" />
     <Content Include="Ionic.Zip.dll" />
     <None Include="load.gif" />
   </ItemGroup>
