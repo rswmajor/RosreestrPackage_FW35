@@ -21,11 +21,14 @@ namespace RosreestrPackage
         private X509Certificate2 mPickedCert = null;
         private frmProgress formProgress = null;
 
+        private bool isSettingsLoad = false;
+
         private const string NAME_SIGNPACK = "SchemaParcels";
 
         private void frmMain_Load(object sender, EventArgs e)
         {
             InitUI();
+            LoadSettings();
         }
 
         private void InitUI()
@@ -37,7 +40,22 @@ namespace RosreestrPackage
 
             this.Text += " " + Application.ProductVersion;
 
-            chbNotCreatePackage_CheckedChanged(null, null);
+            //chbNotCreatePackage_CheckedChanged(null, null);
+
+            openFileDialog1.Filter = "Все файлы|*.*";
+            openFileDialog1.FileName = "";
+
+        }
+
+        private void LoadSettings()
+        {
+            isSettingsLoad = true;
+
+            chbDeleteFiles.Checked = Properties.Settings.Default.DeleteSourceFiles;
+            chbNotCreatePackage.Checked = Properties.Settings.Default.NotCreatePackage;
+            chbOverwriteSign.Checked = Properties.Settings.Default.OverwriteSign;
+
+            isSettingsLoad = false;
         }
 
 
@@ -122,6 +140,13 @@ namespace RosreestrPackage
 
         }
 
+        private void btnAddFiles_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog()==DialogResult.OK)
+            {
+                LoadFiles(openFileDialog1.FileNames);
+            }
+        }
 
         private void Rp_OnProgress(object sender, RosreestrPackageCreater.ProgressEventArgs e)
         {
@@ -177,7 +202,8 @@ namespace RosreestrPackage
 
                     string certSubjectName = getCertSubjectName(mPickedCert);
                     if (certSubjectName.Length > 0)
-                        textComplete = certSubjectName + "\n" + textComplete;
+                        formProgress.setTextProgressTop(certSubjectName);
+                        //textComplete = certSubjectName + "\n" + textComplete;
 
                     if (!chbNotCreatePackage.Checked)
                     {
@@ -415,57 +441,16 @@ namespace RosreestrPackage
 
         private X509Certificate2 pickCertificate()
         {
-            X509Store myStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
 
-            try
-            {
-                myStore.Open(OpenFlags.ReadOnly);
+            ////X509Certificate2Collection certsSelected = X509Certificate2UI.SelectFromCollection(certsForOpen, "Выбор сертификата",
+            //                                                                                    "Выберите сертификат для подписи", 
+            //                                                                                    X509SelectionFlag.SingleSelection);
+            var frmcert = new frmSelectCertificate();
+            frmcert.ShowDialog();
+            var certSelected = frmcert.SelectedCertificate;
+            frmcert.Dispose();
 
-                X509Certificate2Collection certsForOpen;
-
-                if (!chbShowAllCerts.Checked)
-                {
-                    certsForOpen = new X509Certificate2Collection();
-                    foreach (X509Certificate2 cert in myStore.Certificates)
-                    {
-                        if (cert.SignatureAlgorithm.Value.Equals("1.2.643.2.2.3"))
-                            certsForOpen.Add(cert);
-                    }
-                }
-                else
-                {
-                    certsForOpen = myStore.Certificates;
-                }
-
-                ////X509Certificate2Collection certsSelected = X509Certificate2UI.SelectFromCollection(certsForOpen, "Выбор сертификата",
-                //                                                                                    "Выберите сертификат для подписи", 
-                //                                                                                    X509SelectionFlag.SingleSelection);
-
-                var frmcert = new frmSelectCertificate();
-                frmcert.CertificateList = certsForOpen;
-                frmcert.ShowDialog();
-                var certSelected = frmcert.SelectedCertificate;
-                frmcert.Dispose();
-
-                return certSelected;
-
-                //if (certsSelected.Count > 0)
-                //{
-                //    return certsSelected[0];
-                //}
-
-            }
-            catch (Exception)
-            {
-
-            }
-            finally
-            {
-                myStore.Close();
-            }
-
-
-            return null;
+            return certSelected;
         }
 
 
@@ -591,6 +576,30 @@ namespace RosreestrPackage
         private void chbNotCreatePackage_CheckedChanged(object sender, EventArgs e)
         {
             btnCreatePackage.Text = chbNotCreatePackage.Checked ? "Подписать" : "Подписать и упаковать";
+
+            if (!isSettingsLoad)
+            {
+                Properties.Settings.Default.NotCreatePackage = chbNotCreatePackage.Checked;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void chbDeleteFiles_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isSettingsLoad)
+            {
+                Properties.Settings.Default.DeleteSourceFiles = chbDeleteFiles.Checked;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void chbOverwriteSign_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!isSettingsLoad)
+            {
+                Properties.Settings.Default.OverwriteSign = chbOverwriteSign.Checked;
+                Properties.Settings.Default.Save();
+            }
         }
 
 

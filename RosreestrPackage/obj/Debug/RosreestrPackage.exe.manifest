@@ -4,7 +4,7 @@
   <description asmv2:iconFile="iconRR.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="RosreestrPackage" version="1.4.0.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="RosreestrPackage" version="1.7.0.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="RosreestrPackage.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -70,14 +70,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RosreestrPackage.exe" size="1170944">
-      <assemblyIdentity name="RosreestrPackage" version="1.4.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RosreestrPackage.exe" size="1181184">
+      <assemblyIdentity name="RosreestrPackage" version="1.7.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>/PLOM8HuGU8cTFIEnAvv3qCb7uI=</dsig:DigestValue>
+        <dsig:DigestValue>GzIyi+OJd80WAnJfMUMgfWvhVyg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -108,13 +108,13 @@
       <dsig:DigestValue>ihFAzrw59plO736N5GJ/t7cqLdk=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="RosreestrPackage.exe.config" size="157">
+  <file name="RosreestrPackage.exe.config" size="1431">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>60+p9NXC1fxypc5g3dMH4EOGocU=</dsig:DigestValue>
+      <dsig:DigestValue>8HlFC1HRTSS3+CRrVYawlWlaq6Q=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">

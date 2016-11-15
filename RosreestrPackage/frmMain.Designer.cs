@@ -39,9 +39,10 @@
             this.btnCreatePackage = new System.Windows.Forms.Button();
             this.chbDeleteFiles = new System.Windows.Forms.CheckBox();
             this.btnNewGuid = new System.Windows.Forms.Button();
-            this.chbShowAllCerts = new System.Windows.Forms.CheckBox();
             this.chbNotCreatePackage = new System.Windows.Forms.CheckBox();
             this.chbOverwriteSign = new System.Windows.Forms.CheckBox();
+            this.btnAddFiles = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,7 +72,7 @@
             this.CheckSignToolStripMenuItem,
             this.ViewCertToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(198, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(198, 92);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // ClearListFilesToolStripMenuItem
@@ -121,40 +122,30 @@
             this.chbDeleteFiles.AutoSize = true;
             this.chbDeleteFiles.Checked = true;
             this.chbDeleteFiles.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbDeleteFiles.Location = new System.Drawing.Point(12, 329);
+            this.chbDeleteFiles.Location = new System.Drawing.Point(12, 350);
             this.chbDeleteFiles.Name = "chbDeleteFiles";
             this.chbDeleteFiles.Size = new System.Drawing.Size(189, 17);
             this.chbDeleteFiles.TabIndex = 2;
             this.chbDeleteFiles.Text = "Удалить файлы после упаковки";
             this.chbDeleteFiles.UseVisualStyleBackColor = true;
+            this.chbDeleteFiles.CheckedChanged += new System.EventHandler(this.chbDeleteFiles_CheckedChanged);
             // 
             // btnNewGuid
             // 
             this.btnNewGuid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNewGuid.Location = new System.Drawing.Point(397, 346);
+            this.btnNewGuid.Location = new System.Drawing.Point(305, 346);
             this.btnNewGuid.Name = "btnNewGuid";
-            this.btnNewGuid.Size = new System.Drawing.Size(120, 23);
+            this.btnNewGuid.Size = new System.Drawing.Size(86, 23);
             this.btnNewGuid.TabIndex = 4;
             this.btnNewGuid.Text = "Новый GUID";
             this.btnNewGuid.UseVisualStyleBackColor = true;
             this.btnNewGuid.Click += new System.EventHandler(this.btnNewGuid_Click);
             // 
-            // chbShowAllCerts
-            // 
-            this.chbShowAllCerts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.chbShowAllCerts.AutoSize = true;
-            this.chbShowAllCerts.Location = new System.Drawing.Point(12, 352);
-            this.chbShowAllCerts.Name = "chbShowAllCerts";
-            this.chbShowAllCerts.Size = new System.Drawing.Size(181, 17);
-            this.chbShowAllCerts.TabIndex = 5;
-            this.chbShowAllCerts.Text = "Показывать все сертификаты";
-            this.chbShowAllCerts.UseVisualStyleBackColor = true;
-            // 
             // chbNotCreatePackage
             // 
             this.chbNotCreatePackage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chbNotCreatePackage.AutoSize = true;
-            this.chbNotCreatePackage.Location = new System.Drawing.Point(207, 329);
+            this.chbNotCreatePackage.Location = new System.Drawing.Point(12, 329);
             this.chbNotCreatePackage.Name = "chbNotCreatePackage";
             this.chbNotCreatePackage.Size = new System.Drawing.Size(128, 17);
             this.chbNotCreatePackage.TabIndex = 6;
@@ -166,21 +157,39 @@
             // 
             this.chbOverwriteSign.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chbOverwriteSign.AutoSize = true;
-            this.chbOverwriteSign.Location = new System.Drawing.Point(207, 352);
+            this.chbOverwriteSign.Location = new System.Drawing.Point(146, 329);
             this.chbOverwriteSign.Name = "chbOverwriteSign";
             this.chbOverwriteSign.Size = new System.Drawing.Size(119, 17);
             this.chbOverwriteSign.TabIndex = 7;
             this.chbOverwriteSign.Text = "Переподписывать";
             this.chbOverwriteSign.UseVisualStyleBackColor = true;
+            this.chbOverwriteSign.CheckedChanged += new System.EventHandler(this.chbOverwriteSign_CheckedChanged);
+            // 
+            // btnAddFiles
+            // 
+            this.btnAddFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddFiles.Location = new System.Drawing.Point(397, 346);
+            this.btnAddFiles.Name = "btnAddFiles";
+            this.btnAddFiles.Size = new System.Drawing.Size(120, 23);
+            this.btnAddFiles.TabIndex = 8;
+            this.btnAddFiles.Text = "Добавить файлы";
+            this.btnAddFiles.UseVisualStyleBackColor = true;
+            this.btnAddFiles.Click += new System.EventHandler(this.btnAddFiles_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Multiselect = true;
             // 
             // frmMain
             // 
+            this.AcceptButton = this.btnCreatePackage;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 381);
+            this.Controls.Add(this.btnAddFiles);
             this.Controls.Add(this.chbOverwriteSign);
             this.Controls.Add(this.chbNotCreatePackage);
-            this.Controls.Add(this.chbShowAllCerts);
             this.Controls.Add(this.btnNewGuid);
             this.Controls.Add(this.chbDeleteFiles);
             this.Controls.Add(this.btnCreatePackage);
@@ -202,7 +211,6 @@
         private System.Windows.Forms.Button btnCreatePackage;
         private System.Windows.Forms.CheckBox chbDeleteFiles;
         private System.Windows.Forms.Button btnNewGuid;
-        private System.Windows.Forms.CheckBox chbShowAllCerts;
         private System.Windows.Forms.CheckBox chbNotCreatePackage;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem ClearListFilesToolStripMenuItem;
@@ -210,6 +218,8 @@
         private System.Windows.Forms.CheckBox chbOverwriteSign;
         private System.Windows.Forms.ToolStripMenuItem CheckSignToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ViewCertToolStripMenuItem;
+        private System.Windows.Forms.Button btnAddFiles;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

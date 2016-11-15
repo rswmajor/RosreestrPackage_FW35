@@ -36,6 +36,8 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnOk = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.chbShowAllCerts = new System.Windows.Forms.CheckBox();
+            this.chbShowOldCerts = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lvCertificates
@@ -102,12 +104,38 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Выберите сертификат";
             // 
+            // chbShowAllCerts
+            // 
+            this.chbShowAllCerts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chbShowAllCerts.AutoSize = true;
+            this.chbShowAllCerts.Location = new System.Drawing.Point(12, 325);
+            this.chbShowAllCerts.Name = "chbShowAllCerts";
+            this.chbShowAllCerts.Size = new System.Drawing.Size(181, 17);
+            this.chbShowAllCerts.TabIndex = 6;
+            this.chbShowAllCerts.Text = "Показывать все сертификаты";
+            this.chbShowAllCerts.UseVisualStyleBackColor = true;
+            this.chbShowAllCerts.CheckedChanged += new System.EventHandler(this.chbShowAllCerts_CheckedChanged);
+            // 
+            // chbShowOldCerts
+            // 
+            this.chbShowOldCerts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chbShowOldCerts.AutoSize = true;
+            this.chbShowOldCerts.Location = new System.Drawing.Point(199, 325);
+            this.chbShowOldCerts.Name = "chbShowOldCerts";
+            this.chbShowOldCerts.Size = new System.Drawing.Size(223, 17);
+            this.chbShowOldCerts.TabIndex = 7;
+            this.chbShowOldCerts.Text = "Показывать устаревшие сертификаты";
+            this.chbShowOldCerts.UseVisualStyleBackColor = true;
+            this.chbShowOldCerts.CheckedChanged += new System.EventHandler(this.chbShowOldCerts_CheckedChanged);
+            // 
             // frmSelectCertificate
             // 
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(709, 354);
+            this.Controls.Add(this.chbShowOldCerts);
+            this.Controls.Add(this.chbShowAllCerts);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.lvCertificates);
@@ -130,5 +158,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox chbShowAllCerts;
+        private System.Windows.Forms.CheckBox chbShowOldCerts;
     }
 }

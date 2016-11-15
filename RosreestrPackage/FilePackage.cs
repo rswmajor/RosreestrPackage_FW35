@@ -18,7 +18,6 @@ namespace RosreestrPackage
         /// File to package
         /// </summary>
         /// <param name="filePath">Full path to file</param>
-        /// <param name="inSubDirectory">if in sub directory - true</param>
         /// <param name="basePath">if in sub directory - path parent directory to xml file, else string empty</param>
         public FilePackage(string filePath, string basePath)
         {

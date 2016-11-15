@@ -357,6 +357,7 @@ namespace RosreestrPackage
             public int CountSigned { get; set; } = 0;
             public int CountInPackage { get; set; } = 0;
             public ProgressError Error { get; set; } = ProgressError.NO_ERROR;
+            public string ErrorDetails { get; set; } = string.Empty; 
 
         }
     }

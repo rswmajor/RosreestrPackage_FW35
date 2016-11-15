@@ -124,6 +124,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RosreestrPackageCreater.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SignatureChecker.cs" />
     <EmbeddedResource Include="frmGuid.resx">
       <DependentUpon>frmGuid.cs</DependentUpon>

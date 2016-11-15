@@ -22,5 +22,65 @@ namespace RosreestrPackage.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowAllCerts {
+            get {
+                return ((bool)(this["ShowAllCerts"]));
+            }
+            set {
+                this["ShowAllCerts"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowOldCerts {
+            get {
+                return ((bool)(this["ShowOldCerts"]));
+            }
+            set {
+                this["ShowOldCerts"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DeleteSourceFiles {
+            get {
+                return ((bool)(this["DeleteSourceFiles"]));
+            }
+            set {
+                this["DeleteSourceFiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool NotCreatePackage {
+            get {
+                return ((bool)(this["NotCreatePackage"]));
+            }
+            set {
+                this["NotCreatePackage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OverwriteSign {
+            get {
+                return ((bool)(this["OverwriteSign"]));
+            }
+            set {
+                this["OverwriteSign"] = value;
+            }
+        }
     }
 }

@@ -15,6 +15,11 @@ namespace RosreestrPackage
             InitializeComponent();
         }
 
+        public void setTextProgressTop(string text)
+        {
+            lblProgressTop.Text = text;
+        }
+
         public void setTextProgress(string text)
         {
             lblProgress.Text = text;
@@ -85,6 +90,5 @@ namespace RosreestrPackage
         {
             this.Close();
         }
-
     }
 }
