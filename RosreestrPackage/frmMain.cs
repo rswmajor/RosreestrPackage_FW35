@@ -576,6 +576,7 @@ namespace RosreestrPackage
         private void chbNotCreatePackage_CheckedChanged(object sender, EventArgs e)
         {
             btnCreatePackage.Text = chbNotCreatePackage.Checked ? "Подписать" : "Подписать и упаковать";
+            chbDeleteFiles.Enabled = !chbNotCreatePackage.Checked;
 
             if (!isSettingsLoad)
             {
