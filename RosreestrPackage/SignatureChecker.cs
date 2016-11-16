@@ -50,14 +50,15 @@ namespace RosreestrPackage
 
         public static bool Verify(string filename, string filesig)
         {
-            byte[] msg = File.ReadAllBytes(filename);
-            byte[] sig = File.ReadAllBytes(filesig);
-
-            var content = new ContentInfo(msg);
-            var cms = new SignedCms(content, true);
-            cms.Decode(sig);
             try
             {
+                byte[] msg = File.ReadAllBytes(filename);
+                byte[] sig = File.ReadAllBytes(filesig);
+
+                var content = new ContentInfo(msg);
+                var cms = new SignedCms(content, true);
+                cms.Decode(sig);
+            
                 cms.CheckSignature(true);
                 return true;
             }
