@@ -101,7 +101,7 @@ namespace RosreestrPackage
                         filesToSign.Add((FilePackage)item.Tag);
                     }
 
-                    //sign package if shema parcels
+                    //sign package if schema parcels
                     bool isSignPack;
                     string packageName;
                     var xmlfile = SelectPackageXML(searchXmlCadastre(filesToSign));
@@ -231,6 +231,8 @@ namespace RosreestrPackage
 
 
                     formProgress.completeProgress(args.Error == RosreestrPackageCreater.ProgressEventArgs.ProgressError.NO_ERROR, textError);
+
+                    UpdateIconsIsSigned();
                     break;
                 default:
                     break;
@@ -320,6 +322,19 @@ namespace RosreestrPackage
                     lvListFiles.Items.Add(item);
                 }
             }
+        }
+
+        private void UpdateIconsIsSigned()
+        {
+            foreach (ListViewItem item in lvListFiles.Items)
+            {
+                if (((FilePackage)item.Tag).IsSigned)
+                {
+                    item.ImageIndex = 0;
+                }
+                Debug.WriteLine("item.ImageIndex: {0}", item.ImageIndex.ToString());
+            }
+
         }
 
 

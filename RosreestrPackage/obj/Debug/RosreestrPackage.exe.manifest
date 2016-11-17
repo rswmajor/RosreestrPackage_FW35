@@ -4,7 +4,7 @@
   <description asmv2:iconFile="iconRR.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="RosreestrPackage" version="1.7.0.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="RosreestrPackage" version="1.7.1.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="RosreestrPackage.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -70,14 +70,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RosreestrPackage.exe" size="1181184">
-      <assemblyIdentity name="RosreestrPackage" version="1.7.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RosreestrPackage.exe" size="1181696">
+      <assemblyIdentity name="RosreestrPackage" version="1.7.1.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>QZejNwwBnltWSWSgQWNdD34V1pk=</dsig:DigestValue>
+        <dsig:DigestValue>heiSw2jOv/o5T7eg+KFPdK3fBAI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
