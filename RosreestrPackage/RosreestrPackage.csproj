@@ -173,7 +173,6 @@
     <Content Include="iconRR.ico" />
     <None Include="iconViewFind.png" />
     <None Include="iconWarningShield.png" />
-    <Content Include="Ionic.Zip.dll" />
     <None Include="load.gif" />
   </ItemGroup>
   <ItemGroup>
