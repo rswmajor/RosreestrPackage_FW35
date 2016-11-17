@@ -120,8 +120,6 @@
             // 
             this.chbDeleteFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chbDeleteFiles.AutoSize = true;
-            this.chbDeleteFiles.Checked = true;
-            this.chbDeleteFiles.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbDeleteFiles.Location = new System.Drawing.Point(12, 350);
             this.chbDeleteFiles.Name = "chbDeleteFiles";
             this.chbDeleteFiles.Size = new System.Drawing.Size(189, 17);
