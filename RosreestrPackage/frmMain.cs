@@ -61,13 +61,96 @@ namespace RosreestrPackage
 
         private void btnCreatePackage_Click(object sender, EventArgs e)
         {
+            Start();
+            //return;
+            //if (lvListFiles.Items.Count > 0)
+            //{
+
+            //    mPickedCert = pickCertificate();
+            //    if (mPickedCert != null)
+            //    {
+
+            //        //Unpack zip if count files 1
+            //        if (lvListFiles.Items.Count == 1)
+            //        {
+            //            var file = (FilePackage)lvListFiles.Items[0].Tag;
+            //            if (IsCadastrePackage(file))
+            //            {
+            //                string filesig = file.FullName + RosreestrPackageCreater.SIGNATURE_EXT;
+            //                bool sigExists = File.Exists(filesig);
+            //                string comment = sigExists ? "\n\nПодпись архива будет удалена, т.к. перестанет быть корректной." : "";
+
+            //                if (MessageBox.Show("Подписать файлы внутри архива?" + comment, "Подтверждение",
+            //                    MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+            //                {
+            //                    //If the signature is there, it will be incorrect
+            //                    if (sigExists)
+            //                    {
+            //                        File.Delete(filesig);
+            //                    }
+
+            //                    lvListFiles.Items[0].Remove();
+            //                    UnpackPackageAndAddFiles(file);
+            //                }
+            //            }
+            //        }
+
+
+            //        List<FilePackage> filesToSign = new List<FilePackage>();
+
+            //        foreach (ListViewItem item in lvListFiles.Items)
+            //        {
+            //            filesToSign.Add((FilePackage)item.Tag);
+            //        }
+
+            //        //sign package if schema parcels
+            //        bool isSignPack;
+            //        string packageName;
+            //        var xmlfile = SelectPackageXML(searchXmlCadastre(filesToSign));
+            //        if (xmlfile != null)
+            //        {
+            //            isSignPack = xmlfile.Name.StartsWith(NAME_SIGNPACK);
+            //            packageName = xmlfile.DirectoryPath + "\\" + Path.GetFileNameWithoutExtension(xmlfile.Name) + RosreestrPackageCreater.PACKAGE_EXT;
+            //        }
+            //        else
+            //        {
+            //            isSignPack = false;
+            //            packageName = "";
+            //        }
+
+            //        if (isSignPack)
+            //        {
+            //            isSignPack = MessageBox.Show("Подписать создаваемый пакет выбранной подписью?", "Подтверждение",
+            //                                        MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) == DialogResult.Yes;
+            //        }
+
+            //        //
+            //        var rp = new RosreestrPackageCreater(filesToSign, mPickedCert, chbNotCreatePackage.Checked, chbDeleteFiles.Checked);
+            //        rp.PackageName = packageName;
+            //        rp.IsSignPackage = isSignPack;
+            //        rp.OverWriteSign = chbOverwriteSign.Checked;
+            //        rp.OnProgress += Rp_OnProgress;
+            //        rp.createPackageAsync();
+
+
+            //        formProgress = new frmProgress();
+            //        formProgress.Location = new Point(Location.X + Width / 2, Location.Y + Height / 2);
+            //        formProgress.ShowDialog();
+
+            //    }
+            //}
+
+        }
+
+        private void Start()
+        {
             if (lvListFiles.Items.Count > 0)
             {
-
                 mPickedCert = pickCertificate();
+
                 if (mPickedCert != null)
                 {
-
+                    bool needUnpack = false;
                     //Unpack zip if count files 1
                     if (lvListFiles.Items.Count == 1)
                     {
@@ -87,8 +170,7 @@ namespace RosreestrPackage
                                     File.Delete(filesig);
                                 }
 
-                                lvListFiles.Items[0].Remove();
-                                UnpackPackageAndAddFiles(file);
+                                needUnpack = true;
                             }
                         }
                     }
@@ -102,31 +184,42 @@ namespace RosreestrPackage
                     }
 
                     //sign package if schema parcels
-                    bool isSignPack;
+                    bool needSignPack;
                     string packageName;
-                    var xmlfile = SelectPackageXML(searchXmlCadastre(filesToSign));
-                    if (xmlfile != null)
+                    FilePackage xmlfile;
+                    if (!needUnpack)
                     {
-                        isSignPack = xmlfile.Name.StartsWith(NAME_SIGNPACK);
-                        packageName = xmlfile.DirectoryPath + "\\" + Path.GetFileNameWithoutExtension(xmlfile.Name) + RosreestrPackageCreater.PACKAGE_EXT;
+                        xmlfile = SelectPackageXML(searchXmlCadastre(filesToSign));
+                        if (xmlfile != null)
+                        {
+                            needSignPack = xmlfile.Name.StartsWith(NAME_SIGNPACK);
+                            packageName = xmlfile.DirectoryPath + "\\" + Path.GetFileNameWithoutExtension(xmlfile.Name) + RosreestrPackageCreater.PACKAGE_EXT;
+                        }
+                        else
+                        {
+                            needSignPack = false;
+                            packageName = "";
+                        }
+
                     }
                     else
                     {
-                        isSignPack = false;
-                        packageName = "";
+                        needSignPack = true;
+                        packageName = ((FilePackage)lvListFiles.Items[0].Tag).FullName;
                     }
 
-                    if (isSignPack)
+                    if (needSignPack)
                     {
-                        isSignPack = MessageBox.Show("Подписать создаваемый пакет выбранной подписью?", "Подтверждение",
+                        needSignPack = MessageBox.Show("Подписать создаваемый пакет выбранной подписью?", "Подтверждение",
                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) == DialogResult.Yes;
                     }
 
                     //
                     var rp = new RosreestrPackageCreater(filesToSign, mPickedCert, chbNotCreatePackage.Checked, chbDeleteFiles.Checked);
                     rp.PackageName = packageName;
-                    rp.IsSignPackage = isSignPack;
+                    rp.IsSignPackage = needSignPack;
                     rp.OverWriteSign = chbOverwriteSign.Checked;
+                    rp.NeedUnpack = needUnpack;
                     rp.OnProgress += Rp_OnProgress;
                     rp.createPackageAsync();
 
@@ -135,10 +228,11 @@ namespace RosreestrPackage
                     formProgress.Location = new Point(Location.X + Width / 2, Location.Y + Height / 2);
                     formProgress.ShowDialog();
 
+
                 }
             }
-
         }
+
 
         private void btnAddFiles_Click(object sender, EventArgs e)
         {
@@ -332,7 +426,7 @@ namespace RosreestrPackage
                 {
                     item.ImageIndex = 0;
                 }
-                Debug.WriteLine("item.ImageIndex: {0}", item.ImageIndex.ToString());
+                //Debug.WriteLine("item.ImageIndex: {0}", item.ImageIndex.ToString());
             }
 
         }
@@ -351,28 +445,29 @@ namespace RosreestrPackage
             return true;
         }
 
-        private void UnpackPackageAndAddFiles(FilePackage filePackage)
-        {
-            using (ZipFile zip = ZipFile.Read(filePackage.FullName, new ReadOptions() { Encoding = Encoding.GetEncoding(866) }))
-            {
+        //private void UnpackPackageAndAddFiles(FilePackage filePackage)
+        //{
+        //    using (ZipFile zip = ZipFile.Read(filePackage.FullName, new ReadOptions() { Encoding = Encoding.GetEncoding(866) }))
+        //    {
 
-                zip.AlternateEncoding = Encoding.UTF8;
-                zip.AlternateEncodingUsage = ZipOption.Default;
+        //        zip.AlternateEncoding = Encoding.UTF8;
+        //        zip.AlternateEncodingUsage = ZipOption.Default;
 
-                zip.ExtractAll(filePackage.DirectoryPath);
+        //        zip.ExtractAll(filePackage.DirectoryPath);
 
-                var files = zip.EntryFileNames;
-                foreach (var myfile in files)
-                {
-                    string relativeName = myfile.Replace("/", "\\");
-                    bool inSubDir = relativeName.IndexOf("\\") > -1;
-                    string fullName = Path.Combine(filePackage.DirectoryPath, relativeName);
-                    string basePath = inSubDir ? filePackage.DirectoryPath : string.Empty;
-                    AddFileToList(fullName, basePath);
+        //        var files = zip.EntryFileNames;
+        //        foreach (var myfile in files)
+        //        {
+        //            string relativeName = myfile.Replace("/", "\\");
+        //            bool inSubDir = relativeName.IndexOf("\\") > -1;
+        //            string fullName = Path.Combine(filePackage.DirectoryPath, relativeName);
+        //            string basePath = inSubDir ? filePackage.DirectoryPath : string.Empty;
+        //            AddFileToList(fullName, basePath);
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
+
 
         private List<FilePackage> searchXmlCadastre(List<FilePackage> files)
         {
@@ -471,7 +566,6 @@ namespace RosreestrPackage
 
         private string getCertSubjectName(X509Certificate2 cert)
         {
-            //SN=Рихмайер, G=Сергей Владимирович, STREET="Советская улица, 91", OID.1.2.840.113549.1.9.8=24-13-609, CN=Рихмайер Сергей Владимирович, L="Енисейский район, село Верхнепашино", S=24 Красноярский край, C=RU, E=1243008h@technokad.rosreestr.ru, ИНН=244703398425, СНИЛС=12144807021
             return cert.GetNameInfo(X509NameType.DnsName, false);
         }
 
