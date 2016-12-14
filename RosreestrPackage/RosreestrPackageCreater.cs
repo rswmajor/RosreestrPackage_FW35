@@ -40,6 +40,7 @@ namespace RosreestrPackage
 
 
         private string tmpDir = "";
+        private FilePackage linkExistPack = null;
 
         public void createPackageAsync()
         {
@@ -66,12 +67,12 @@ namespace RosreestrPackage
 
             if (needUnpack)
             {
+                linkExistPack = filesToSign[0];
                 filesToSign = UnzipPackage(packageName);
                 if (filesToSign.Count > 0)
                 {
                     tmpDir = filesToSign[0].DirectoryPath;
                 }
-                removeFiles = true;
                 notCreatePackage = false;
             }
 
@@ -122,14 +123,27 @@ namespace RosreestrPackage
                                 if (removeFiles)
                                 {
                                     raiseEvent(new ProgressEventArgs(ProgressEventArgs.ProgressStatus.DELETE_FILES_BEGIN, signaturesFiles.Count, filesToPackage.Count));
-                                    deleteSourceFiles(filesToPackage, tmpDir);
+                                    deleteSourceFiles(filesToPackage);
+                                }
+
+                                if (tmpDir.Length>0)
+                                {
+                                    raiseEvent(new ProgressEventArgs(ProgressEventArgs.ProgressStatus.DELETE_FILES_BEGIN, signaturesFiles.Count, filesToPackage.Count));
+                                    deleteTempDir(tmpDir);
                                 }
 
                                 if (isSignPackage)
                                 {
                                     raiseEvent(new ProgressEventArgs(ProgressEventArgs.ProgressStatus.SIGN_PACKAGE, signaturesFiles.Count, filesToPackage.Count));
                                     var list = new List<FilePackage>();
-                                    list.Add(new FilePackage(packageName, ""));
+                                    if (linkExistPack == null)
+                                    {
+                                        list.Add(new FilePackage(packageName, ""));
+                                    }
+                                    else
+                                    {
+                                        list.Add(linkExistPack);
+                                    }
                                     signFiles(list, cert, true);
                                 }
                             }
@@ -166,7 +180,14 @@ namespace RosreestrPackage
 
                 string directoryPackage = Directory.GetParent(zipfileName).FullName;
                 string targetPath = directoryPackage + "\\tmp" + new Random().Next(1000000).ToString();
-                zip.ExtractAll(targetPath);
+                try
+                {
+                    zip.ExtractAll(targetPath, ExtractExistingFileAction.OverwriteSilently);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
 
                 var files = zip.EntryFileNames;
                 foreach (var myfile in files)
@@ -326,7 +347,7 @@ namespace RosreestrPackage
         }
 
 
-        private void deleteSourceFiles(List<FilePackage> files, string tmpDir)
+        private void deleteSourceFiles(List<FilePackage> files)
         {
             List<string> dirs = new List<string>();
             foreach (FilePackage myfile in files)
@@ -335,20 +356,19 @@ namespace RosreestrPackage
                 {
                     File.Delete(myfile.FullName);
 
-                    if (!dirs.Contains(myfile.DirectoryPath))
+                    if (myfile.BasePath.Length > 0)
                     {
-                        dirs.Add(myfile.DirectoryPath);
+                        if (!dirs.Contains(myfile.DirectoryPath))
+                        {
+                            dirs.Add(myfile.DirectoryPath);
+                        }
                     }
+
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex.Message);
                 }
-            }
-
-            if (tmpDir.Length > 0)
-            {
-                dirs.Add(tmpDir);
             }
 
             foreach (var dir in dirs)
@@ -364,6 +384,17 @@ namespace RosreestrPackage
             }
         }
 
+        private void deleteTempDir(string tmpDir)
+        {
+            try
+            {
+                Directory.Delete(tmpDir, true);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message + "\n" + tmpDir);
+            }
+        }
 
         private void raiseEvent(ProgressEventArgs args)
         {
