@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -69,10 +70,10 @@ namespace RosreestrPackage
             {
                 linkExistPack = filesToSign[0];
                 filesToSign = UnzipPackage(packageName);
-                if (filesToSign.Count > 0)
-                {
-                    tmpDir = filesToSign[0].DirectoryPath;
-                }
+                //if (filesToSign.Count > 0)
+                //{
+                //    tmpDir = filesToSign[0].DirectoryPath;
+                //}
                 notCreatePackage = false;
             }
 
@@ -129,7 +130,7 @@ namespace RosreestrPackage
                                 if (tmpDir.Length>0)
                                 {
                                     raiseEvent(new ProgressEventArgs(ProgressEventArgs.ProgressStatus.DELETE_FILES_BEGIN, signaturesFiles.Count, filesToPackage.Count));
-                                    deleteTempDir(tmpDir);
+                                    deleteDirR(tmpDir);
                                 }
 
                                 if (isSignPackage)
@@ -179,7 +180,8 @@ namespace RosreestrPackage
                 zip.AlternateEncodingUsage = ZipOption.Default;
 
                 string directoryPackage = Directory.GetParent(zipfileName).FullName;
-                string targetPath = directoryPackage + "\\tmp" + new Random().Next(1000000).ToString();
+                string targetPath = directoryPackage + "\\tmp" + new Random().Next(1000000).ToString("D6");
+                tmpDir = targetPath;
                 try
                 {
                     zip.ExtractAll(targetPath, ExtractExistingFileAction.OverwriteSilently);
@@ -237,8 +239,6 @@ namespace RosreestrPackage
             {
                 try
                 {
-
-
                     //if (!overwritesig)
                     //{
                     //    if (fileSig.Exists)
@@ -271,6 +271,63 @@ namespace RosreestrPackage
             return signedFiles;
         }
 
+        private byte[] signBytes(byte[] bytesToSign, X509Certificate2 cert)
+        {
+            byte[] signedBytes;
+
+            try
+            {
+                ContentInfo content = new ContentInfo(bytesToSign);
+                SignedCms signCms = new SignedCms(content, true);
+                CmsSigner signer = new CmsSigner(SubjectIdentifierType.IssuerAndSerialNumber, cert);
+                signCms.ComputeSignature(signer, false); //если silent = true -> неотображается окно ввода пароля контейнера
+                signedBytes = signCms.Encode();
+
+                return signedBytes;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            return null;
+        }
+
+        private List<FilePackage> signFiles_test(List<FilePackage> files, X509Certificate2 cert, bool overwritesig)
+        {
+            List<FilePackage> signedFiles = new List<FilePackage>();
+            CmsSigner signer = new CmsSigner(SubjectIdentifierType.IssuerAndSerialNumber, cert);
+            //RSACryptoServiceProvider provider = cert.PrivateKey as RSACryptoServiceProvider;
+
+            foreach (FilePackage myfile in files)
+            {
+                try
+                {
+                    byte[] bytesToSign = File.ReadAllBytes(myfile.FullName);
+                    ContentInfo content = new ContentInfo(bytesToSign);
+                    SignedCms signCms = new SignedCms(content, true);
+                    signCms.ComputeSignature(signer, false); //если silent = true -> неотображается окно ввода пароля контейнера
+                    byte[] signedBytes = signCms.Encode();
+
+                    if (signedBytes != null)
+                    {
+                        FilePackage fileSig = new FilePackage(myfile.FullName + SIGNATURE_EXT, myfile.BasePath);
+
+                        File.WriteAllBytes(fileSig.FullName, signedBytes);
+
+                        myfile.IsSigned = true;
+
+                        signedFiles.Add(fileSig);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+
+            return signedFiles;
+        }
 
         private bool createZip(List<FilePackage> files, string zipName)
         {
@@ -303,28 +360,6 @@ namespace RosreestrPackage
             return false;
         }
 
-
-        private byte[] signBytes(byte[] bytesToSign, X509Certificate2 cert)
-        {
-            byte[] signedBytes;
-
-            try
-            {
-                ContentInfo content = new ContentInfo(bytesToSign);
-                SignedCms signCms = new SignedCms(content, true);
-                CmsSigner signer = new CmsSigner(SubjectIdentifierType.IssuerAndSerialNumber, cert);
-                signCms.ComputeSignature(signer, false); //если silent = true -> неотображается окно ввода пароля контейнера
-                signedBytes = signCms.Encode();
-
-                return signedBytes;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-
-            return null;
-        }
 
         private FilePackage searchXmlCadastre(List<FilePackage> files)
         {
@@ -384,15 +419,15 @@ namespace RosreestrPackage
             }
         }
 
-        private void deleteTempDir(string tmpDir)
+        private void deleteDirR(string path)
         {
             try
             {
-                Directory.Delete(tmpDir, true);
+                Directory.Delete(path, true);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message + "\n" + tmpDir);
+                Debug.WriteLine(ex.Message + "\n" + path);
             }
         }
 
